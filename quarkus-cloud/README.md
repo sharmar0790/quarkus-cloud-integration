@@ -1,54 +1,50 @@
-# quarkus-cloud project
+# Quarkus-cloud project
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+## Creating the project
+```
+mvn io.quarkus:quarkus-maven-plugin:1.12.2.Final:create \
+  -DprojectGroupId=org.quarkus.cloud   \
+  -DprojectArtifactId=quarkus-cloud    \
+  -Dextensions="container-image-jib"
+```
 
-## Running the application in dev mode
+### Adding other cloud extensions
+```
+# Health extensions
+./mvnw quarkus:add-extension -Dextensions="smallrye-health"
+
+# Opentracing extensions
+./mvnw quarkus:add-extension -Dextensions="smallrye-opentracing"
+
+# Sentry extensions
+./mvnw quarkus:add-extension -Dextensions="logging-sentry"
+
+# Metrics extensions
+./mvnw quarkus:add-extension -Dextensions="metrics"
+
+# Logging-gelf extensions
+./mvnw quarkus:add-extension -Dextensions="logging-gelf"
+```
+
+### Building Image
+```
+./mvnw clean package -Dquarkus.container-image.build=true
+```
+
+### Building and Pushing Image
+```
+./mvnw clean package -Dquarkus.container-image.push=true
+```
+
+### Run jaeger containerised
+```
+docker run -p 5775:5775/udp -p 6831:6831/udp -p 6832:6832/udp -p 5778:5778 -p 16686:16686 -p 14268:14268 jaegertracing/all-in-one:latest
+```
+
+### Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
 ```shell script
 ./mvnw compile quarkus:dev
 ```
-
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
-
-## Packaging and running the application
-
-The application can be packaged using:
-```shell script
-./mvnw package
-```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
-```
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-## Creating a native executable
-
-You can create a native executable using: 
-```shell script
-./mvnw package -Pnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/quarkus-cloud-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.html.
-
-## Provided examples
-
-### RESTEasy JAX-RS example
-
-REST is easy peasy with this Hello World RESTEasy resource.
-
-[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
