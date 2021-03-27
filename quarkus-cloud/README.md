@@ -48,6 +48,11 @@ You can run your application in dev mode that enables live coding using:
 ./mvnw compile quarkus:dev
 ```
 
+### Running the application in kubernetes
+```
+$ kubectl apply -f target/kubernetes/kubernetes.yml
+```
+
 ### Running the health check
 Importing the smallrye-health extension directly exposes three REST endpoints:
 * _/q/health/live_ - The application is up and running.
